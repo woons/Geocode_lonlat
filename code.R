@@ -1,7 +1,7 @@
 library(XML)
 
 # DaumMap APIKEY 
-APIKey <- "f460128b18d67b478afc32eb9222d3b4"
+APIKey <- "비밀"
 
 # Request Parameters
 getUrls <- function(address, type){
