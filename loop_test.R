@@ -1,9 +1,8 @@
 library(XML)
-library(RCurl)
 library(tidyverse)
 
 # DaumMap APIKEY 
-APIKey <- "비밀"
+APIKey <- ""
 
 # Request Parameters
 getUrls <- function(address, type){
@@ -18,10 +17,11 @@ getData <- function(url){
   root <- xmlRoot(xmlParse(url))
   lat <- xmlSApply(getNodeSet(root, "//lat"), xmlValue)
   lng <- xmlSApply(getNodeSet(root, "//lng"), xmlValue)
-  latlon <- cbind(lat, lng)
+  latlon <- cbind(lat, lng) %>% as.data.frame %>% slice(1)
+  print(latlon)
   latlon_df <- as.data.frame(latlon, rownames=NULL)
   latlon_false <- data.frame(lat = NA, lng = NA, stringsAsFactors = F)
-
+  
   #만약 lat, lng이 제값을 가지면 그대로 반환 아니면 NA로 채움
   if(is.list(lat) | is.list(lng)){
     return(latlon_false)
@@ -29,7 +29,6 @@ getData <- function(url){
     return(latlon_df)
   }
 }
-
 # get data
 my_address <- unique(read.csv("address.csv", stringsAsFactors = F, encoding = "utf-8"))
 
